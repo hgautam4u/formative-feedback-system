@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_KEEP_ALIVE=-1
+      - OLLAMA_NUM_THREAD=16
+    volumes:
+      - ./ollama-data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 48G
+          cpus: '16'
+        reservations:
+          memory: 32G
+          cpus: '8'
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Vancouver
+    volumes:
+      - ./n8n-data:/home/node/.n8n
+      - ./n8n-files:/home/node/.n8n-files
+    depends_on:
+      - ollama
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '8'
+        reservations:
+          memory: 4G
+          cpus: '4'
+
+networks:
+  default:
+    name: formative-feedback-network

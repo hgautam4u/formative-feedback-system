@@ -1,0 +1,98 @@
+{
+  "name": "Essay Exam Formative Feedback",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start-node",
+      "name": "Start Grading",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "filePath": "=/home/node/.n8n-files/submissions/{{$json.filename}}"
+      },
+      "id": "read-file",
+      "name": "Read Submission",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "extractFromFile",
+        "options": {}
+      },
+      "id": "extract-text",
+      "name": "Extract Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const submission = $input.first().json.text;\nconst studentName = $input.first().json.metadata.studentName || 'Student';\nconst studentId = $input.first().json.metadata.studentId || 'N/A';\n\nconst prompt = `Provide formative feedback on this CRM exam draft.\n\nSTUDENT: ${studentName} (${studentId})\n\nSUBMISSION:\n${submission}\n\nRUBRIC:\nPart 1 (35 pts): Customer Experience Analysis\n- Q1 (12 pts): Experience documentation with specific details\n- Q2a (8 pts): Relationship opportunities linked to course concepts\n- Q2b (8 pts): Communication behaviors with examples\n- Q2c (7 pts): Technology analysis with course principles\n\nPart 2 (35 pts): Service Recovery\n- Q1 (20 pts): Recovery script with specific techniques\n- Q2 (15 pts): Video justification (check if link provided)\n\nPart 3 (30 pts): Strategy Proposal\n- Q1 (18 pts): Resource-constrained strategy (≤$5000, ≤40 hours)\n- Q2 (8 pts): Team management approach\n- Q3 (4 pts): Personal reflection\n\nProvide:\n1. Brief feedback for each part (3-5 sentences)\n2. Specific strengths (2-3 items)\n3. Areas for improvement (2-3 items)\n4. Suggested next steps\n\nReturn as JSON:\n{\n  \"student_name\": \"string\",\n  \"feedback\": {\n    \"part1\": \"string\",\n    \"part2\": \"string\",\n    \"part3\": \"string\"\n  },\n  \"strengths\": [\"string\"],\n  \"improvements\": [\"string\"],\n  \"next_steps\": [\"string\"]\n}\n`;\n\nreturn { json: { prompt, studentName, studentId } };"
+      },
+      "id": "build-prompt",
+      "name": "Build Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "options": {},
+        "bodyParametersJson": "={{ {\"model\": \"formative-feedback\", \"prompt\": $json.prompt, \"stream\": false, \"format\": \"json\"} }}"
+      },
+      "id": "call-ai",
+      "name": "Generate Feedback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json.response;\nlet data;\n\ntry {\n  const clean = response.replace(/```json/g, '').replace(/```/g, '').trim();\n  data = JSON.parse(clean);\n} catch (e) {\n  return { json: { error: 'Failed to parse AI response' } };\n}\n\nconst studentName = $node['Build Prompt'].json.studentName;\nconst studentId = $node['Build Prompt'].json.studentId;\nconst firstName = studentName.split(' ')[0];\n\nconst feedbackText = `Dear ${firstName},\n\nThis is AI-generated formative feedback to help you improve your work.\nUse it to guide revision before submitting to your instructor.\n\n═══════════════════════════════════════════════════════\nFORMATIVE FEEDBACK REPORT\n═══════════════════════════════════════════════════════\n\nStudent: ${studentName}\nID: ${studentId}\nGenerated: ${new Date().toLocaleString()}\n\n─── PART 1: CUSTOMER EXPERIENCE ANALYSIS ───\n${data.feedback.part1}\n\n─── PART 2: SERVICE RECOVERY ───\n${data.feedback.part2}\n\n─── PART 3: STRATEGY PROPOSAL ───\n${data.feedback.part3}\n\n─── YOUR STRENGTHS ───\n${data.strengths.map((s, i) => `${i+1}. ${s}`).join('\\n')}\n\n─── AREAS TO DEVELOP ───\n${data.improvements.map((s, i) => `${i+1}. ${s}`).join('\\n')}\n\n─── RECOMMENDED NEXT STEPS ───\n${data.next_steps.map((s, i) => `${i+1}. ${s}`).join('\\n')}\n\n═══════════════════════════════════════════════════════\nIMPORTANT REMINDERS:\n- This is formative feedback to support your learning\n- You can request feedback multiple times as you revise\n- Final grades are determined by your instructor\n- Use this to improve, not as a grade prediction\n═══════════════════════════════════════════════════════\n`;\n\nreturn {\n  json: { feedbackText, studentName, studentId },\n  binary: {\n    data: {\n      data: Buffer.from(feedbackText, 'utf-8').toString('base64'),\n      mimeType: 'text/plain',\n      fileName: `Feedback_${studentName.replace(/\\s/g, '_')}_${studentId}.txt`\n    }\n  }\n};"
+      },
+      "id": "format-feedback",
+      "name": "Format Feedback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "fileName": "={{$json.binary.data.fileName}}",
+        "options": {}
+      },
+      "id": "save-feedback",
+      "name": "Save Feedback File",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [1450, 300]
+    }
+  ],
+  "connections": {
+    "Start Grading": {
+      "main": [[{ "node": "Read Submission", "type": "main", "index": 0 }]]
+    },
+    "Read Submission": {
+      "main": [[{ "node": "Extract Text", "type": "main", "index": 0 }]]
+    },
+    "Extract Text": {
+      "main": [[{ "node": "Build Prompt", "type": "main", "index": 0 }]]
+    },
+    "Build Prompt": {
+      "main": [[{ "node": "Generate Feedback", "type": "main", "index": 0 }]]
+    },
+    "Generate Feedback": {
+      "main": [[{ "node": "Format Feedback", "type": "main", "index": 0 }]]
+    },
+    "Format Feedback": {
+      "main": [[{ "node": "Save Feedback File", "type": "main", "index": 0 }]]
+    }
+  }
+}
