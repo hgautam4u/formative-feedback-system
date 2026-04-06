@@ -60,7 +60,7 @@ The system expects an Excel file (crm_submissions.xlsx) with the following colum
 
 ## Documentation
 
-See `docs/` folder for detailed guides.
+For more information on configuring specific models, modifying the grading rubric, or troubleshooting Docker volumes, please see the docs/ folder.
 
 ## License
 
