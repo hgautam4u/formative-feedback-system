@@ -52,16 +52,16 @@ The system follows an automated pipeline:
 ## Data Structure
 
 The system expects an Excel file (crm_submissions.xlsx) with the following columns:
-  - student Name
-  - student Id
-  - student Email
-  - submission Text
-  - video Link (optional)
+  - ```student Name```
+  - ```student Id```
+  - ```student Email```
+  - ```submission Text```
+  - ```video Link``` (optional)
 
 ## Documentation
 
-For more information on configuring specific models, modifying the grading rubric, or troubleshooting Docker volumes, please see the docs/ folder.
+For more information on configuring specific models, modifying the grading rubric, or troubleshooting Docker volumes, please see the ```docs/``` folder.
 
 ## License
 
-MIT License - see LICENSE file
+MIT License - see ```LICENSE``` file
