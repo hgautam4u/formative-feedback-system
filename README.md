@@ -38,7 +38,7 @@ The system follows an automated pipeline:
 
 ## Requirements
 
-  #### Hardware (Recommended)
+  ### Hardware (Recommended)
   - CPU: 8+ cores (AMD Ryzen 7 / Intel i7 or better)
   - RAM: 32GB+ (Required to run 7B-9B parameter models smoothly)
   - Storage: 256GB+ SSD
