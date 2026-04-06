@@ -1,153 +1,165 @@
 {
-  "name": "Website SEO Feedback",
   "nodes": [
     {
-      "parameters": {},
-      "id": "manual-start",
-      "name": "Manual Trigger",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [240, 300]
-    },
-    {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "student-name",
-              "name": "studentName",
-              "value": "Test Student",
-              "type": "string"
-            },
-            {
-              "id": "website-url",
-              "name": "websiteUrl",
-              "value": "https://example.com",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "id": "set-website-info",
-      "name": "Set Website Info",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3,
-      "position": [460, 300]
-    },
-    {
-      "parameters": {
-        "url": "={{ $json.websiteUrl }}",
+        "url": "={{ $json['Website URL'] }}",
         "options": {}
       },
-      "id": "fetch-website",
-      "name": "Fetch Website Content",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [680, 300]
+      "typeVersion": 4.4,
+      "position": [
+        32,
+        -128
+      ],
+      "id": "d1584f96-ab2a-46a3-b5ed-59030f4b661b",
+      "name": "HTTP Request"
     },
     {
       "parameters": {
-        "jsCode": "const html = $input.item.json.data || '';\nconst studentName = $node['Set Website Info'].json.studentName;\nconst url = $node['Set Website Info'].json.websiteUrl;\n\nconst prompt = `Evaluate this student website for SEO optimization.\n\nSTUDENT: ${studentName}\nURL: ${url}\n\nHTML CONTENT:\n${html.substring(0, 3000)}\n\nEVALUATE THESE CRITERIA:\n1. H1 heading optimization (includes keywords?)\n2. Meta description (present and 150-160 chars?)\n3. Image alt text (present on all images?)\n4. Keyword usage (appropriate density?)\n5. Mobile responsiveness indicators\n6. Page structure (proper heading hierarchy?)\n\nProvide:\n- Strengths found\n- Issues to fix\n- Specific recommendations\n- Priority actions (top 3)\n\nReturn as JSON:\n{\n  \"student_name\": \"${studentName}\",\n  \"strengths\": [\"strength 1\", \"strength 2\"],\n  \"issues\": [\"issue 1\", \"issue 2\"],\n  \"recommendations\": [\"rec 1\", \"rec 2\"],\n  \"priority_actions\": [\"action 1\", \"action 2\", \"action 3\"]\n}`;\n\nreturn { json: { prompt, studentName, url } };"
-      },
-      "id": "build-seo-prompt",
-      "name": "Build SEO Analysis Prompt",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [900, 300]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://ollama:11434/api/generate",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
+        "formTitle": "Feedback for Website Project",
+        "formFields": {
+          "values": [
             {
-              "name": "model",
-              "value": "formative-feedback"
+              "fieldLabel": "Student Name"
             },
             {
-              "name": "prompt",
-              "value": "={{ $json.prompt }}"
+              "fieldLabel": "Website URL"
             },
             {
-              "name": "stream",
-              "value": false
+              "fieldLabel": "Rationale"
             },
             {
-              "name": "format",
-              "value": "json"
+              "fieldLabel": "Student Email",
+              "fieldType": "email"
             }
           ]
-        }
+        },
+        "options": {}
       },
-      "id": "call-ai-seo",
-      "name": "Call Ollama for SEO Analysis",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4,
-      "position": [1120, 300]
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -192,
+        -128
+      ],
+      "id": "8be2a1d3-c5d0-4554-b0a3-e4a7597a820d",
+      "name": "On form submission",
+      "webhookId": "999a7a9e-8dd7-45e1-a3dd-4678dccbb406"
     },
     {
       "parameters": {
-        "jsCode": "const response = $input.item.json.response;\nconst studentName = $node['Build SEO Analysis Prompt'].json.studentName;\nconst url = $node['Build SEO Analysis Prompt'].json.url;\n\nlet analysis;\ntry {\n  const clean = response.replace(/```json/g, '').replace(/```/g, '').trim();\n  analysis = JSON.parse(clean);\n} catch (e) {\n  return { json: { error: 'Failed to parse response', raw: response } };\n}\n\nconst report = `\nWEBSITE SEO ANALYSIS\n===================\n\nStudent: ${studentName}\nURL: ${url}\nDate: ${new Date().toLocaleDateString()}\n\n✓ STRENGTHS\n${analysis.strengths.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n⚠ ISSUES TO FIX\n${analysis.issues.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n💡 RECOMMENDATIONS\n${analysis.recommendations.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n🎯 PRIORITY ACTIONS\n${analysis.priority_actions.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\nNOTE: This is automated technical feedback.\nUse it to improve your website before final submission.\n===================\n`;\n\nreturn { json: { report, studentName, url } };"
+        "model": "llama3.1:8b",
+        "options": {}
       },
-      "id": "format-seo-report",
-      "name": "Format SEO Report",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1340, 300]
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        328,
+        96
+      ],
+      "id": "02beb6c5-3d5a-4d98-ac8f-817414af4bf4",
+      "name": "Ollama Chat Model",
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output }}",
+        "destinationKey": "formatted_feedback",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -128
+      ],
+      "id": "35638f27-243d-4e54-97bd-468c8d5a19b7",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.formatted_feedback }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        -128
+      ],
+      "id": "36b08012-7ba4-459d-8a5d-594c233edbb5",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a supportive Digital Marketing Mentor grading a student's first 3-page Elementor project. \n\nKeep feedback concise and bulleted\n\n### CRITICAL INSTRUCTIONS:\n- NEVER say \"Upon reviewing the HTML\" or mention \"tags,\" \"divs,\" or \"scripts.\" \n- Talk like you are looking at the website visually. Use terms like \"Heading,\" \"Button,\" \"Navigation,\" and \"Layout.\"\n- ELEMENTOR SPEED: If the site feels heavy, suggest \"reducing the number of widgets\" instead of \"excessive wrapper divs.\"\n- LOGO CHECK: Check if the logo is a .jpg. If so, suggest using a .png with a transparent background for a professional look.\n- FAVICON: Check for a Favicon. Mention it if missing.\n\n### EVALUATION CRITERIA (75 Marks Total):\n\n1. Website Design (/15): \n- Focus on the \"Upper Fold.\" If a button exists but links to \"#\", mark it as \"Good effort but needs a functional link.\"\n- Score 10.5-12 if the CTA is present but non-functional.\n\n2. Content Quality (/15): \n- Evaluate the value proposition. Is it clear what the site is about?\n\n3. SEO Implementation (/15): \n- Do NOT say Title tags are missing if the URL slug looks clean (e.g., /about or /contact). \n- If slugs are clean, award at least 11/15. \n- Remind them about Alt-text for images in a helpful way.\n\n4. Brand Assets (/15): \n- Look for the logo. If it's a JPG with a white background, suggest a transparent PNG. \n- Mention the Favicon as a \"professional touch.\"\n\n5. Documentation & Reflection (/15): \n### STUDENT DATA:\n- Student Name: {{ $('On form submission').item.json['Student Name'] }}\n- RATIONALE_PRESENT: {{ $('On form submission').item.json.Rationale }} ? \"YES\" : \"NO_MARK_ZERO\" }}\n- Student Rationale Content: {{ $('On form submission').item.json.Rationale }} || \"STRICT_ZERO_REASON: No submission provided.\" }}\n\n\n### SCORING STABILITY:\n- Excellent (13.5-15): Everything looks professional and functional.\n- Good (12-13.4): Present but needs minor tweaks (e.g., logo transparency or dead links).\n- Fair (10.5-11.9): Missing Alt-text or unclear value proposition.\n- Needs Improvement (0-10.4): Missing rationale or broken layout.\n\n### OUTPUT FORMAT:\nTotal Score: [Sum]/75\n\n[Category Name]: [Score]/15\n- [Specific feedback—keep it brief and supportive.]\n\nNext Steps for your Blogpost:\n1. [Strategy Tip 1]\n2. [Strategy Tip 2]\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        256,
+        -128
+      ],
+      "id": "ae8667a1-316a-4fc3-b0bb-7d6c25a5ca3c",
+      "name": "AI Agent1"
     }
   ],
   "connections": {
-    "Manual Trigger": {
+    "HTTP Request": {
       "main": [
         [
           {
-            "node": "Set Website Info",
+            "node": "AI Agent1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Set Website Info": {
+    "On form submission": {
       "main": [
         [
           {
-            "node": "Fetch Website Content",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Fetch Website Content": {
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
       "main": [
         [
           {
-            "node": "Build SEO Analysis Prompt",
+            "node": "HTML",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Build SEO Analysis Prompt": {
+    "HTML": {
       "main": [
-        [
-          {
-            "node": "Call Ollama for SEO Analysis",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
-    "Call Ollama for SEO Analysis": {
+    "AI Agent1": {
       "main": [
         [
           {
-            "node": "Format SEO Report",
+            "node": "Markdown",
             "type": "main",
             "index": 0
           }
@@ -155,5 +167,9 @@
       ]
     }
   },
-  "pinData": {}
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "shared-web-feedback-workflow"
+  }
 }
