@@ -8,7 +8,7 @@ This system provides students with AI-generated formative feedback on draft subm
 
 ## Quick Start
 ```bash
-git clone [https://github.com/hgautam4u/formative-feedback-system](https://github.com/hgautam4u/formative-feedback-system)
+git clone https://github.com/hgautam4u/formative-feedback-system
 cd formative-feedback-system
 chmod +x INSTALL.sh
 ./INSTALL.sh
