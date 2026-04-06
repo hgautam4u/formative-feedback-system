@@ -14,15 +14,27 @@ chmod +x INSTALL.sh
 ./INSTALL.sh
 ```
 
-Access n8n at http://localhost:5678
+- Access n8n at http://localhost:5678
+- Import: In n8n, click on Workflow > Import from File and select workflows/crm-grading-workflow.json.
+- Configure: * Set up your local Ollama credentials in the "AI Agent" node.
+- Ensure your source file crm_submissions.xlsx is placed in the project's ./data directory.
 
 ## Features
 
-- Privacy-preserving (all data on your server)
-- Zero ongoing costs
-- 15-30 second feedback generation  
-- Customizable for any discipline
-- No programming required
+- Privacy-Preserving: All student data stays on your own server. No third-party API processing.
+- Zero Ongoing Costs: No per-token fees; utilizes your existing local compute.
+- Rapid Turnaround: Approximately 15–30 seconds per student feedback report.
+- Plagiarism Detection: Built-in algorithmic logic to flag high-similarity submissions within the current batch.
+- Customizable: Easily adjust the grading rubric and prompt instructions for any academic discipline.
+
+## Workflow Architecture
+
+The system follows an automated pipeline:
+  - Ingestion: Reads student submissions from an Excel file.
+  - Batching: Processes students individually to manage system memory.
+  - Integrity Check: Compares current submission text against the rest of the batch for plagiarism.
+  - AI Grading: Passes the submission and rubric to a local LLM (e.g., Gemma2 or Llama3).
+  - Reporting: Generates a formatted .txt feedback report for each student and compiles a master results spreadsheet.
 
 ## Requirements
 
