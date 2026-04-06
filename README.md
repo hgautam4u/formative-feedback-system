@@ -38,11 +38,25 @@ The system follows an automated pipeline:
 
 ## Requirements
 
-- Ubuntu 24.04 (or similar Linux)
-- 8+ CPU cores
-- 32GB+ RAM
-- 256GB+ storage
-- Docker installed
+  #### Hardware (Recommended)
+  - CPU: 8+ cores (AMD Ryzen 7 / Intel i7 or better)
+  - RAM: 32GB+ (Required to run 7B-9B parameter models smoothly)
+  - Storage: 256GB+ SSD
+  - GPU (Optional): NVIDIA GPU with 8GB+ VRAM is highly recommended for faster inference.
+
+  ### Software
+  - Ubuntu 24.04 (or similar Linux distribution)
+  - Docker & Docker Compose
+  - Ollama (installed and running locally)
+
+## Data Structure
+
+The system expects an Excel file (crm_submissions.xlsx) with the following columns:
+  - student Name
+  - student Id
+  - student Email
+  - submission Text
+  - video Link (optional)
 
 ## Documentation
 
