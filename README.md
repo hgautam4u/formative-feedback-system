@@ -14,7 +14,7 @@ chmod +x INSTALL.sh
 ./INSTALL.sh
 ```
 
-- Access n8n at http://localhost:5678
+- Access n8n at ```bashhttp://localhost:5678```
 - Import: In n8n, click on Workflow > Import from File and select workflows/crm-grading-workflow.json.
 - Configure: * Set up your local Ollama credentials in the "AI Agent" node.
 - Ensure your source file crm_submissions.xlsx is placed in the project's ./data directory.
