@@ -1,0 +1,73 @@
+Dear <FNAME>,
+
+Thank you for your CRM exam submission. Below is your feedback.
+
+============================================================
+CRM EXAM FEEDBACK REPORT
+============================================================
+
+Student: <FNAME> 
+ID: 0123456
+Email: sample@emailid.com
+Date: 3/29/2026
+
+------------------------------------------------------------
+YOUR SCORES
+------------------------------------------------------------
+
+PART 1: CUSTOMER EXPERIENCE............26/35
+  Experience Documentation...........8/12
+  Relationship Opportunities.........3/8
+  Communication Behaviors............8/8
+  Technology & Personalization.......7/7
+
+PART 2: CUSTOMER RECOVERY..............30/35
+  Recovery Script....................20/20
+  Video Justification................10/15
+
+PART 3: STRATEGY PROPOSAL..............26/30
+  Strategy & Resources...............14/18
+  Team Management....................8/8
+  Personal Reflection................4/4
+
+------------------------------------------------------------
+TOTAL SCORE: 82/100
+------------------------------------------------------------
+
+------------------------------------------------------------
+DETAILED FEEDBACK
+------------------------------------------------------------
+
+PART 1: YOUR CUSTOMER EXPERIENCE
+<FNAME>, your "Authentic Customer Experience Analysis" provides a vivid narrative of your parcel delivery issues, clearly detailing "three moments when my emotional state changed" and what "surprised me" about the company's response. However, the specified "Approximate Date: December 2025" for a past experience is a significant error, undermining the authenticity of your submission. While you effectively identify missed opportunities like "service recovery" and the lack of "empathy," your argument that the company "at least answered my phone call" as a *used* relationship opportunity is a conceptual weakness, as basic customer interaction is an expectation, not a strategic relationship leverage. Your analysis of "Communication Behaviors" and "Technology and Personalization" is strong, accurately pinpointing operational gaps and their impact.
+
+PART 2: CUSTOMER RECOVERY
+Your "Telephone Recovery Call Script" is exemplary, demonstrating a strong grasp of service recovery principles by directly addressing the customer's pain points with "Empathetic acknowledgment," a sincere "Service apology," and clear "Ownership of the problem." The script skillfully integrates multiple techniques and proposes concrete recovery actions, making it highly effective and authentic. Your additional discussions on "One Action Beyond the Call" and "Difference Between Customer Type" further showcased a thoughtful approach to comprehensive customer recovery, though these were not explicitly graded by the rubric. The video link was provided as required.
+
+PART 3: STRATEGY PROPOSAL
+Your "Resource-Constrained Strategy Proposal" is well-structured, allocating resources thoughtfully across "Value, Information, Convenience, and Timing" to address the identified customer experience gaps. You propose specific improvements like "clearer tracking updates and delay notifications" and a "better pickup and re-delivery support process" which are directly relevant to your Part 1 experience. However, there is a notable inconsistency in your summary table, where the "Value" improvement is listed as "Customer service training for emploees," contradicting your detailed description of a "goodwill service credit and loyalty recovery program." This lack of precision indicates a need for more rigorous attention to detail in strategic documentation. Your "Team Management Approach" and "Personal Reflection" are insightful, outlining practical steps for implementation and acknowledging potential challenges.
+
+------------------------------------------------------------
+OVERALL ASSESSMENT
+------------------------------------------------------------
+<FNAME>, your submission demonstrates a solid understanding of CRM concepts, particularly in service recovery and identifying customer pain points. To excel further, focus on meticulous accuracy in factual details and ensure complete conceptual alignment, especially when distinguishing between basic service functions and strategic relationship opportunities. Addressing inconsistencies in your proposals will elevate your professional readiness.
+
+YOUR STRENGTHS:
+• Strong narrative and emotional analysis in Part 1.1, vividly describing the customer experience.
+• Excellent, authentic, and technique-rich recovery call script in Part 2.1, directly addressing customer issues.
+• Detailed identification and analysis of communication and technology gaps, showing strong critical thinking.
+• Well-structured and relevant strategy proposal, allocating resources effectively to address key pain points.
+• Comprehensive team management plan and insightful personal reflection, demonstrating managerial foresight.
+
+AREAS FOR GROWTH:
+• Meticulous accuracy in documenting experience details, especially dates, to maintain authenticity.
+• Deeper conceptual understanding of CRM terms, such as what constitutes a 'relationship opportunity' versus standard service delivery.
+• Ensuring internal consistency and precision in strategic proposals and documentation, specifically aligning text descriptions with summary tables.
+
+------------------------------------------------------------
+Note: This is preliminary automated grading.
+I will manually review videos and adjust scores as needed.
+------------------------------------------------------------
+
+Graded: 3/29/2026, 12:52:54 AM
+============================================================
