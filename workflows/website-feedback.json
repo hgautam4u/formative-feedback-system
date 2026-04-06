@@ -1,0 +1,159 @@
+{
+  "name": "Website SEO Feedback",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-start",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "student-name",
+              "name": "studentName",
+              "value": "Test Student",
+              "type": "string"
+            },
+            {
+              "id": "website-url",
+              "name": "websiteUrl",
+              "value": "https://example.com",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "set-website-info",
+      "name": "Set Website Info",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.websiteUrl }}",
+        "options": {}
+      },
+      "id": "fetch-website",
+      "name": "Fetch Website Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.item.json.data || '';\nconst studentName = $node['Set Website Info'].json.studentName;\nconst url = $node['Set Website Info'].json.websiteUrl;\n\nconst prompt = `Evaluate this student website for SEO optimization.\n\nSTUDENT: ${studentName}\nURL: ${url}\n\nHTML CONTENT:\n${html.substring(0, 3000)}\n\nEVALUATE THESE CRITERIA:\n1. H1 heading optimization (includes keywords?)\n2. Meta description (present and 150-160 chars?)\n3. Image alt text (present on all images?)\n4. Keyword usage (appropriate density?)\n5. Mobile responsiveness indicators\n6. Page structure (proper heading hierarchy?)\n\nProvide:\n- Strengths found\n- Issues to fix\n- Specific recommendations\n- Priority actions (top 3)\n\nReturn as JSON:\n{\n  \"student_name\": \"${studentName}\",\n  \"strengths\": [\"strength 1\", \"strength 2\"],\n  \"issues\": [\"issue 1\", \"issue 2\"],\n  \"recommendations\": [\"rec 1\", \"rec 2\"],\n  \"priority_actions\": [\"action 1\", \"action 2\", \"action 3\"]\n}`;\n\nreturn { json: { prompt, studentName, url } };"
+      },
+      "id": "build-seo-prompt",
+      "name": "Build SEO Analysis Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "formative-feedback"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.prompt }}"
+            },
+            {
+              "name": "stream",
+              "value": false
+            },
+            {
+              "name": "format",
+              "value": "json"
+            }
+          ]
+        }
+      },
+      "id": "call-ai-seo",
+      "name": "Call Ollama for SEO Analysis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json.response;\nconst studentName = $node['Build SEO Analysis Prompt'].json.studentName;\nconst url = $node['Build SEO Analysis Prompt'].json.url;\n\nlet analysis;\ntry {\n  const clean = response.replace(/```json/g, '').replace(/```/g, '').trim();\n  analysis = JSON.parse(clean);\n} catch (e) {\n  return { json: { error: 'Failed to parse response', raw: response } };\n}\n\nconst report = `\nWEBSITE SEO ANALYSIS\n===================\n\nStudent: ${studentName}\nURL: ${url}\nDate: ${new Date().toLocaleDateString()}\n\n✓ STRENGTHS\n${analysis.strengths.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n⚠ ISSUES TO FIX\n${analysis.issues.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n💡 RECOMMENDATIONS\n${analysis.recommendations.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\n🎯 PRIORITY ACTIONS\n${analysis.priority_actions.map((s, i) => `  ${i+1}. ${s}`).join('\\n')}\n\nNOTE: This is automated technical feedback.\nUse it to improve your website before final submission.\n===================\n`;\n\nreturn { json: { report, studentName, url } };"
+      },
+      "id": "format-seo-report",
+      "name": "Format SEO Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Website Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Website Info": {
+      "main": [
+        [
+          {
+            "node": "Fetch Website Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Website Content": {
+      "main": [
+        [
+          {
+            "node": "Build SEO Analysis Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build SEO Analysis Prompt": {
+      "main": [
+        [
+          {
+            "node": "Call Ollama for SEO Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Ollama for SEO Analysis": {
+      "main": [
+        [
+          {
+            "node": "Format SEO Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}
