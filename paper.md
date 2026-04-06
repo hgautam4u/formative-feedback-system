@@ -118,33 +118,3 @@ HG designed the system architecture, developed the workflows, conducted the impl
 ## Acknowledgments
 
 This work builds on contributions from the n8n, Ollama, and language model research communities. We thank students who provided feedback on system usability and effectiveness.
-
-## References
-
-Black, P., & Wiliam, D. (1998). Assessment and classroom learning. Assessment in Education: Principles, Policy & Practice, 5(1), 7-74.
-
-Hattie, J., & Timperley, H. (2007). The power of feedback. Review of Educational Research, 77(1), 81-112.
-
-Holmes, W., Bialik, M., & Fadel, C. (2019). Artificial Intelligence in Education: Promises and Implications for Teaching and Learning. Center for Curriculum Redesign.
-
-Holstein, K., McLaren, B. M., & Aleven, V. (2019). Co-designing a real-time classroom orchestration tool to support teacher-AI complementarity. Journal of Learning Analytics, 6(2), 27-52.
-
-Kasneci, E., Sessler, K., Küchemann, S., Bannert, M., Dementieva, D., Fischer, F., Gasser, U., Groh, G., Günnemann, S., Hüllermeier, E., Krusche, S., Kutyniok, G., Michaeli, T., Nerdel, C., Pfeffer, J., Poquet, O., Sailer, M., Schmidt, A., Seidel, T., Stadler, M., Weller, J., Kuhn, J., & Kasneci, G. (2023). ChatGPT for good? On opportunities and challenges of large language models for education. Learning and Individual Differences, 103, 102274.
-
-Reidenberg, J. R., & Schaub, F. (2018). Achieving big data privacy in education. Theory and Research in Education, 16(3), 263-279.
-
-Selwyn, N. (2019). Should Robots Replace Teachers? AI and the Future of Education. Polity Press.
-
-Shute, V. J. (2008). Focus on formative feedback. Review of Educational Research, 78(1), 153-189.
-
-Gemma Team. (2024). Gemma 2: Improving open language models at a practical size. arXiv preprint arXiv:2408.00118.
-
-Touvron, H., Martin, L., Stone, K., Albert, P., Almahairi, A., Babaei, Y., Bashlykov, N., Batra, S., Bhargava, P., Bhosale, S., Bikel, D., Blecher, L., Ferrer, C. C., Chen, M., Cucurull, G., Esiobu, D., Fernandes, J., Fu, J., Fu, W., Fuller, B., Gao, C., Goswami, V., Goyal, N., Hartshorn, A., Hosseini, S., Hou, R., Inan, H., Kardas, M., Kerkez, V., Khabsa, M., Kloumann, I., Korenev, A., Koura, P. S., Lachaux, M., Lavril, T., Lee, J., Liskovich, D., Lu, Y., Mao, Y., Martinet, X., Mihaylov, T., Mishra, P., Molybog, I., Nie, Y., Poulton, A., Reizenstein, J., Rungta, R., Saladi, K., Schelten, A., Silva, R., Smith, E. M., Subramanian, R., Tan, X. E., Tang, B., Taylor, R., Williams, A., Kuan, J. X., Xu, P., Yan, Z., Zarov, I., Zhang, Y., Fan, A., Kambadur, M., Narang, S., Rodriguez, A., Stojnic, R., Edunov, S., & Scialom, T. (2023). Llama 2: Open foundation and fine-tuned chat models. arXiv preprint arXiv:2307.09288.
-
-Tsai, Y. S., Perrotta, C., & Gašević, D. (2020). Empowering learners with personalized learning approaches? Agency, equity and transparency in the context of learning analytics. Assessment & Evaluation in Higher Education, 45(4), 554-567.
-
-Wiliam, D. (2011). What is assessment for learning? Studies in Educational Evaluation, 37(1), 3-12.
-
-Yang, A., Yang, B., Hui, B., Zheng, B., Yu, B., Zhou, C., Li, C., Li, C., Liu, D., Huang, F., Dong, G., Wei, H., Tang, H., Zhang, J., Ma, J., Yang, J., Bai, J., Bai, J., Yang, J., Zeng, J., Dang, K., Wang, K., Ren, K., Miao, K., Zhang, L., Su, L., Song, L., Ma, L., Zheng, L., Du, M., Xue, M., Liu, M., Bian, R., Zhu, S., Wang, S., Ren, S., Qian, S., Tan, S., Wei, X., Zhou, X., Chai, Y., Ma, Y., Liu, Y., Li, Y., Huang, Y., Bai, Y., Dong, Y., Zhang, Y., Deng, Z., Chang, Z., Wang, Z., Wu, Z., & Zhu, Z. (2024). Qwen2.5 technical report. arXiv preprint arXiv:2412.15115.
-
-Zawacki-Richter, O., Marín, V. I., Bond, M., & Gouverneur, F. (2019). Systematic review of research on artificial intelligence applications in higher education. International Journal of Educational Technology in Higher Education, 16(1), 1-27.
