@@ -39,6 +39,8 @@ services:
       - N8N_PROTOCOL=http
       - WEBHOOK_URL=http://localhost:5678/
       - GENERIC_TIMEZONE=America/Vancouver
+      # FIX #2: Define the Ollama host for n8n to use service-to-service networking
+      - OLLAMA_HOST=http://ollama:11434
     volumes:
       - ./n8n-data:/home/node/.n8n
       # FIX #1: Mapping local folder to /data to match workflow expectations
