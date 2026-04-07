@@ -164,7 +164,7 @@
     },
     {
       "parameters": {
-        "model": "gemma2:9b",
+        "model": "formative-feedback",
         "options": {
           "temperature": 0.1,
           "topK": 10,
