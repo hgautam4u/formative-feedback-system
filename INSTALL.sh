@@ -25,27 +25,24 @@ fi
 echo "✅ Docker and Docker Compose are installed"
 echo ""
 
-# Create directories
+# Create directories (Matching n8n volume mapping)
 echo "📁 Creating directories..."
-mkdir -p ollama-data n8n-data n8n-files/submissions n8n-files/feedback
+mkdir -p ollama-data n8n-data n8n-files
 
 echo "🚀 Starting services..."
 docker-compose up -d
 
 echo ""
-echo "⏳ Waiting for Ollama to initialize..."
-echo "   This may take 5-10 minutes for model download"
-echo "   You can monitor progress with: docker logs -f ollama"
-echo ""
+echo "⏳ Waiting for Ollama to initialize (approx 30s)..."
+sleep 30
 
-sleep 20
-
-echo "📥 Pulling qwen2.5:7b model (this takes 5-10 minutes)..."
-docker exec ollama ollama pull qwen2.5:7b
+echo "📥 Pulling qwen2.5:7b model..."
+docker exec -it ollama ollama pull qwen2.5:7b
 
 echo ""
-echo "🔧 Creating optimized formative feedback model..."
-cat > /tmp/formative.Modelfile << 'EOF'
+echo "🔧 Creating optimized formative-feedback model..."
+# Create the Modelfile locally first
+cat > Modelfile << 'EOF'
 FROM qwen2.5:7b
 PARAMETER temperature 0.1
 PARAMETER top_k 10
@@ -53,11 +50,12 @@ PARAMETER top_p 0.3
 PARAMETER repeat_penalty 1.1
 PARAMETER num_ctx 4096
 PARAMETER num_thread 16
+SYSTEM "You are a professional educational assistant. Provide formative feedback that is supportive, specific, and aligned with provided rubrics."
 EOF
 
-docker cp /tmp/formative.Modelfile ollama:/tmp/Modelfile
-docker exec ollama ollama create formative-feedback -f /tmp/Modelfile
-rm /tmp/formative.Modelfile
+docker cp Modelfile ollama:/tmp/Modelfile
+docker exec -it ollama ollama create formative-feedback -f /tmp/Modelfile
+rm Modelfile
 
 echo ""
 echo "════════════════════════════════════════════════════"
@@ -68,9 +66,10 @@ echo "📍 Access n8n at: http://localhost:5678"
 echo ""
 echo "Next steps:"
 echo "1. Open http://localhost:5678 in your browser"
-echo "2. Create n8n account (first-time setup)"
-echo "3. Import workflow: Workflows → Import from File"
-echo "4. Select: workflows/essay-feedback.json"
+echo "2. Import workflows from the 'workflows/' folder:"
+echo "   - workflows/crm-pre-submission.json"
+echo "   - workflows/website-feedback.json"
+echo "3. In n8n, set the Ollama URL to: http://ollama:11434"
 echo ""
 echo "📖 Full documentation: README.md"
 echo "════════════════════════════════════════════════════"
