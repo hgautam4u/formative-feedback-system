@@ -16,12 +16,6 @@ affiliations:
 date: 6 April 2026
 bibliography: paper.bib
 ---
-# A Self-Hosted AI Feedback System for Formative Assessment: Implementation Guide Using n8n and Ollama
-
-**Author:** Harish Gautam  
-**Affiliation:** College of New Caledonia, Prince George, BC, Canada  
-**Email:** connect@harishgautam.net  
-**ORCID:** 0000-0003-3324-2156
 
 ## Summary
 
