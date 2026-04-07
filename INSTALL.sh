@@ -36,13 +36,12 @@ echo ""
 echo "Waiting for Ollama to initialize (approx 30s)..."
 sleep 30
 
-# Pulling llama3.1:8b to match your current working workflows
+# Pulling the base model
 echo "Pulling llama3.1:8b model (this takes a few minutes)..."
 docker exec -it ollama ollama pull llama3.1:8b
 
 echo ""
 echo "Creating optimized formative-feedback model..."
-# Create the Modelfile locally first
 cat > Modelfile << 'EOF'
 FROM llama3.1:8b
 PARAMETER temperature 0.1
@@ -70,7 +69,8 @@ echo "1. Open http://localhost:5678 in your browser"
 echo "2. Import workflows from the 'workflows/' folder:"
 echo "   - workflows/crm-pre-submission.json"
 echo "   - workflows/website-feedback.json"
-echo "3. In n8n, set the Ollama URL to: http://ollama:11434"
+echo "3. In n8n, update the Ollama model node to use: formative-feedback"
+echo "4. In n8n, set the Ollama URL to: http://ollama:11434"
 echo ""
 echo "Full documentation is available in README.md"
 echo "----------------------------------------------------"
