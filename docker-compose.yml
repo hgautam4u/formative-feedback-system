@@ -13,6 +13,12 @@ services:
       - OLLAMA_NUM_THREAD=16
     volumes:
       - ./ollama-data:/root/.ollama
+    # Added healthcheck to ensure n8n waits for it if needed
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     deploy:
       resources:
         limits:
@@ -34,11 +40,15 @@ services:
       - N8N_PROTOCOL=http
       - WEBHOOK_URL=http://localhost:5678/
       - GENERIC_TIMEZONE=America/Vancouver
+      # Pointing to the internal Docker service name
+      - OLLAMA_HOST=http://ollama:11434
     volumes:
       - ./n8n-data:/home/node/.n8n
+      # Standardizing to one folder to match README instructions
       - ./n8n-files:/home/node/.n8n-files
     depends_on:
-      - ollama
+      ollama:
+        condition: service_started
     deploy:
       resources:
         limits:
