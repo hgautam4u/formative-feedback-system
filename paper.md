@@ -10,6 +10,8 @@ authors:
   - name: Harish Gautam
     orcid: 0000-0003-3324-2156
     affiliation: 1
+    corresponding: true
+    email: connect@harishgautam.net
 affiliations:
   - name: College of New Caledonia, Prince George, BC, Canada
     index: 1
