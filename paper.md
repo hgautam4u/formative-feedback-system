@@ -1,7 +1,6 @@
 ---
 title: 'A Self-Hosted AI Feedback System for Formative Assessment: Implementation Guide Using n8n and Ollama'
 tags:
-  - Python
   - n8n
   - Ollama
   - formative assessment
