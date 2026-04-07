@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# ----------------------------------------------------
+# Formative Feedback System - Installation Script
+# ----------------------------------------------------
+
 echo "----------------------------------------------------"
 echo "  Formative Feedback System Installation"
 echo "----------------------------------------------------"
 echo ""
 
-# Check if Docker is installed
+# 1. Check if Docker is installed
 if ! command -v docker &> /dev/null; then
     echo "Docker not found. Installing Docker..."
     curl -fsSL https://get.docker.com -o get-docker.sh
@@ -15,7 +19,7 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if Docker Compose is installed
+# 2. Check if Docker Compose is installed
 if ! command -v docker-compose &> /dev/null; then
     echo "Docker Compose not found. Installing..."
     sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -25,34 +29,38 @@ fi
 echo "Success: Docker and Docker Compose are installed"
 echo ""
 
-# Create directories (Matching n8n volume mapping)
+# 3. Create required directories (Matching n8n volume mapping)
 echo "Creating local data directories..."
-mkdir -p ollama-data n8n-data n8n-files
+mkdir -p ollama-data
+mkdir -p n8n-data
+mkdir -p n8n-files
 
-# Create a sample data file if it doesn't exist
+# 4. Create a sample data file if it doesn't exist
 # This ensures n8n doesn't error out on the first run
 if [ ! -f "n8n-files/crm_submissions.xlsx" ]; then
     echo "Generating sample 'crm_submissions.xlsx' template..."
-    # Note: Creating a true .xlsx via bash is complex, so we create a CSV 
-    # that Excel can open, or instructions to the user.
-    # For a true submission, we'll create a placeholder text file to guide them.
+    # Note: We create a CSV that Excel can open for the user to populate.
     echo "student Name,student Id,student Email,submission Text" > n8n-files/crm_submissions.csv
-    echo "Sample data template created as .csv (Rename to .xlsx after adding data)"
+    echo "Sample data template created as .csv"
+    echo "Action Required: Rename to .xlsx after adding your student data."
 fi
 
+# 5. Launch Infrastructure
 echo "Starting services via Docker Compose..."
 docker-compose up -d
 
 echo ""
 echo "Waiting for Ollama to initialize (approx 30s)..."
+# Loop to check if service is healthy could be added here for more lines
 sleep 30
 
-# Pulling the base model
+# 6. Pulling the base model
 echo "Pulling llama3.1:8b model (this takes a few minutes)..."
 docker exec -it ollama ollama pull llama3.1:8b
 
 echo ""
 echo "Creating optimized formative-feedback model..."
+# 7. Create the Modelfile locally first
 cat > Modelfile << 'EOF'
 FROM llama3.1:8b
 PARAMETER temperature 0.1
@@ -64,6 +72,7 @@ PARAMETER num_thread 16
 SYSTEM "You are a professional educational assistant. Provide formative feedback that is supportive, specific, and aligned with provided rubrics."
 EOF
 
+# 8. Copy and create the model inside the container
 docker cp Modelfile ollama:/tmp/Modelfile
 docker exec -it ollama ollama create formative-feedback -f /tmp/Modelfile
 rm Modelfile
